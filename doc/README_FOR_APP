@@ -1,0 +1,76 @@
+Use this README file to introduce your application and point to useful places in the API for learning more.
+Run "rake doc:app" to generate API documentation for your models, controllers, helpers, and libraries.
+
+This app is used for tracking and estimating projects. The name of the app is "Process Enactment Tool".
+In the home page, we have a Sign up form which allows a new user to sign up for this website. We also have a sign in link which allows the signed up users to log in.
+User has to provide name, password and email address to sign up. While signing in, user has to provide email address and password.We have added validation tests for name, format of email
+password - length, type etc.
+Once the user signs in,we allow the user to view his/projects by clicking on My projects link. User can also create a Project by clicking on the New Project link in /projects page.
+The user has to provide name, description and the lifecycle type of the project. We have added validation tests in our
+model which prevents the user from creating a project without a name and a description. Also, user cannot create projects having the same name.User can choose a lifecycle from
+a pre-populated list of lifecycles using dropdown menu and create a project. User can also edit and delete a project.
+Once the user creates a project, it takes him/her to the project#show page where details of the created project are displayed.
+Here, the name, description and lifecycle of the project is displayed. The user is allowed to choose a project phase
+depending on the chosen lifecycle type. Based on chosen lifecycle type in the previous page, the dropdown menu for the
+project phase autopopulates. User can select a phase from this dropdown box.
+Project phase is an instance of the lifecycle phase which is dependent on type of chosen lifecycle.
+
+Once the user chooses the project phase, he/she will be directed to view phase page which will display the chosen
+lifecycle, project phase , name of the project and the description of the phase. It also populates a dropdown box which lists all the associated deliverable types with the phase. User can choose a specific deliverable type from the dropdown list or choose the "Other" option. Choosing "Other" in the dropdown list takes the user to create adhoc-deliverables page whereas choosing any other listed deliverable type takes the user to the create deliverable page.
+User can input the name, description, complexity, unit of measure, estimated size, estimated effort and estimated production rate in this page. If any 2 of the values amongst estimated size, estimated effort and estimated production rate are input, the third one is autocalculated(javascript is used to achieve this functionality).We have added validation tests such that user will not be able to create a deliverable without providing the name or description.
+
+In the create deliverables page, we allow the user to view the historical data for a given complexity and size to provide a relative idea about the size of the deliverable. In the create adhoc-deliverable page, we do not provide any historical data. 
+
+We have a View all deliverables link in view project(/projects/:id) page which lists out all the deliverables for the particular project along with their estimated effort. In this page, user can log actual effort spent in working on that deliverable.
+User can also edit and delete deliverables and logged effort for the deliverables.
+
+We have also added an administrator to our website. The Administrator has the ability to view, edit and delete a project belonging to any user. The administrator can also assign projects to users.(The idea is that Administrator represents the project manager. User represents the developer. The project manager can assign projects to users)A normal user can only view his/her projects and perform operations on the same.
+
+
+We have deployed our app onto Heroku.
+URL : http://bugshooters.herokuapp.com
+Stories completed :
+View project
+View for Create Deliverable(Typical)
+Create Project
+Delete Project
+Create Deliverable(Typical)
+Create Deliverable(Adhoc)
+View Deliverable
+User model.
+Style the views using css.
+Homepage
+Update Project Phase
+Edit and Delete deliverables
+Create Sign up form
+Create Adhoc Deliverables
+Create Lifecycle phase model
+Refactor Relationship between models
+Fix Project phase view
+Fix Heroku Issues
+User Session
+Effort Estimation for deliverables
+Populate Deliverable types for lifecycle phases
+Populate Historical Data
+Refactor Project phase
+Enhance the UI of the Website
+Fix Routing issues
+Effort Logging
+MultiUser Support
+Populate UOM Data for pre-defined deliverable types    
+Fix bugs in the project
+Refactor relationship between users and projects
+Effort Estimation and logging for project
+User is allowed to delete a project only if the project has no deliverables defined.
+User cannot modify the lifecycle of a project once deliverables are created for the project
+While editing deliverables, user cannot modify the deliverable type associated with it
+Effort Estimation and loggin for each project phase
+List all existing deliverables for a project phase
+Test Non-functional requirements
+
+Stories which could be incorporated in future releases.
+Archive completed projects
+Compare estimated effort with the actual effort for completed projects
+The details of the story cards are given in Storycards.pdf
+
+

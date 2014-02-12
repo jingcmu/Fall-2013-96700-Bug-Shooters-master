@@ -1,0 +1,222 @@
+<% provide(:title, 'adhoc_deliverable edit') %>
+<div class = "container-fluid">
+  <div class="row-fluid">
+    <div class="span5">
+      <h1>Edit Adhoc Deliverable</h1>
+      <%= form_for(@adhoc_deliverable, remote: true) do |f| %>
+
+          <div class="field">
+            <%= f.label :Name %>
+            <%= f.text_field :name %>
+          </div>
+          <div class="field">
+            <%= f.label :Description %>
+            <%= f.text_field :description %>
+          </div>
+
+    </div>
+
+          <div class = "span5">
+            <div class = "field">
+            <%= f.label :Complexity %>
+            <%= select("@adhoc_deliverable", "complexity", {:low => true, :medium => true, :high => true}) %>
+            </div>
+
+            <div class = "field">
+              <%= f.label :Unit_of_measure %>
+              <%= f.text_field :unit_of_measure %>
+            </div>
+
+            <div class = "field">
+              <%= f.label :Estimated_size %>
+              <%= f.text_field :estimated_size %>
+            </div>
+
+            <div class = "field">
+              <%= f.label :Estimated_production_rate %>
+              <%= f.text_field :estimated_production_rate %>
+            </div>
+
+
+            <div class = "field">
+              <%= f.label :Estimated_effort %>
+              <%= f.text_field :estimated_effort %>
+            </div>
+          </div>
+
+          <div class="action">
+            <%=f.submit %>
+          </div>
+  </div>
+
+
+</div>
+
+
+
+<% end %>
+
+<script>
+  var f1 = document.getElementById('adhoc_deliverable_estimated_size');
+  var f2 = document.getElementById('adhoc_deliverable_estimated_production_rate');
+  var f3 = document.getElementById('adhoc_deliverable_estimated_effort');
+  var f1_edit = false;
+  var f2_edit = false;
+  var f3_edit = false;
+  var f1_update = false;
+  var f2_update = false;
+  var f3_update = false;
+
+  var delay = (function(){
+    var timer = 0;
+    return function(callback, ms){
+      clearTimeout (timer);
+      timer = setTimeout(callback, ms);
+    };
+  })();
+
+
+  function update_f1_edit() {
+     if (f1.value && f2.value && !f3.value) {
+         f3.value = parseInt(f1.value) * parseInt(f2.value);
+         f1_update = false;
+         f2_update = false;
+         f3_update = true;
+     } else if (f1.value && f3.value && !f2.value){
+         f2.value = parseInt(f3.value) / parseInt(f1.value);
+         f1_update = false;
+         f2_update = true;
+         f3_update = false;
+     } else if (f1.value && f2.value && f3.value) {
+        if (f1_edit) {
+          if (f3_update) {
+            f3.value = parseInt(f1.value) * parseInt(f2.value);
+          } else if (f2_update) {
+            f2.value = parseInt(f3.value) / parseInt(f1.value);
+          }
+        } else {
+          f2.value = '';
+          f3.value = '';
+          f1_update = false;
+          f2_update = false;
+          f3_update = false;
+        }
+     }
+  };
+
+  function update_f2_edit() {
+    if (f1.value && f2.value && !f3.value) {
+        f3.value = parseInt(f1.value) * parseInt(f2.value);
+        f1_update = false;
+        f2_update = false;
+        f3_update = true;
+    } else if (f2.value && f3.value && !f1.value) {
+        f1.value = parseInt(f3.value) / parseInt(f2.value);
+        f1_update = true;
+        f2_update = false;
+        f3_update = false;
+    } else if (f1.value && f2.value && f3.value) {
+        if (f1_update) {
+          f1.value = parseInt(f3.value) / parseInt(f2.value);
+        } else if (f3_update) {
+          f3.value = parseInt(f1.value) * parseInt(f2.value);
+        } else {
+          f1.value = '';
+          f3.value = '';
+          f1_update = false;
+          f2_update = false;
+          f3_update = false;
+        }
+    }
+  };
+
+  function update_f3_edit() {
+    if (f1.value && f3.value && !f2.value) {
+        f2.value = parseInt(f3.value) / parseInt(f1.value);
+        f1_update = false;
+        f2_update = true;
+        f3_update = false;
+    } else if (f2.value && f3.value && !f1.value) {
+        f1.value = parseInt(f3.value) / parseInt(f2.value);
+        f1_update = true;
+        f2_update = false;
+        f3_update = false;
+    } else if (f1.value && f2.value && f3.value) {
+      if (f1_update) {
+        f1.value = parseInt(f3.value) / parseInt(f2.value);
+      } else if (f2_update) {
+        f2.value = parseInt(f3.value) / parseInt(f1.value);
+      } else {
+        f1.value = '';
+        f2.value = '';
+        f1_update = false;
+        f2_update = false;
+        f3_update = false;
+      }
+    }
+  };
+
+  f1.addEventListener("focus", function() {
+    f1_edit = true;
+  })
+
+  f1.addEventListener("blur", function() {
+    f1_edit = false;
+  })
+
+  f2.addEventListener("focus", function() {
+    f2_edit = true;
+  })
+
+  f2.addEventListener("blur", function() {
+    f2_edit = false;
+  })
+
+  f3.addEventListener("focus", function() {
+    f3_edit = true;
+  })
+
+  f3.addEventListener("blur", function() {
+    f3_edit = false;
+  })
+
+
+
+
+  f1.onkeyup = function() {
+    if (validInput(f1)) {
+      f1.value = ''; // AscII code falls outside of 48-57 is not a number
+    } else {
+      update_f1_edit();
+      // delay(function() {
+      //   update_f1_edit();
+      // }, 1000);
+    }
+  }
+
+  f2.onkeyup = function() {
+    if (validInput(f2)) {
+      f2.value = ''; // AscII code falls outside of 48-57 is not a number
+    } else {
+      update_f2_edit();
+    }
+  }
+
+  f3.onkeyup = function() {
+    if (validInput(f3)) {
+      f3.value = ''; // AscII code falls outside of 48-57 is not a number
+    } else {
+      update_f3_edit();
+    }
+  }
+
+  function validInput(f) {
+    console.log(f.value.length)
+    if (f.value.charCodeAt(f.value.length-1) > 57 || f.value.charCodeAt(f.value.length-1) < 48) {
+        return true;
+    } else {
+        return false;
+    }
+  }
+
+</script>

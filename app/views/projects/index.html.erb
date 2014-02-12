@@ -1,0 +1,55 @@
+
+<% provide(:title, 'project index') %>
+
+<% if signed_in? %>
+  <h1>Projects List</h1>
+  <table id="projects" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Project</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+     <% @projects.each do |project| %>
+       <tr>
+         <th>
+            <%= link_to project.name, project%>
+         </th>
+         <th>
+           <%= link_to 'Edit', edit_project_path(project) %>
+         </th>
+         <th>
+           <%= link_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' } %>
+         </th>
+       </tr>
+     <% end %>
+    </tbody>
+  </table>
+<% else %>
+    </br>
+    </br>
+    <h2>     Sorry, you have not signed in!   </h2>
+    <h3>     See the button top right, and sign in first! </h3>
+<% end %>
+
+
+
+      <!--<button type="button" id = "project_name">Project1</button>
+      <a href = "localhost:3000/projects/edit">Modify</a>
+      <a href = "localhost:3000/projects/edit">Delete</a>
+
+      <br />
+      <button type="button" id = "project_name">Project2</button>
+      <a href = "localhost:3000/projects/edit">Modify</a>
+      <a href = "localhost:3000/projects/edit">Delete</a>
+
+      <br />
+      <button type="button" id = "project_name">Project3</button>
+      <a href = "localhost:3000/projects/edit">Modify</a>
+      <a href = "localhost:3000/projects/edit">Delete</a>
+
+      <br />-->
+

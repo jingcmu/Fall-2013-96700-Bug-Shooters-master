@@ -1,0 +1,89 @@
+<!-- Navbar
+================================================== -->
+<% provide(:title, 'project show') %>
+
+
+<p>
+  <b>Name:</b>
+  <%= @project.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @project.description %>
+</p>
+
+<p>
+  <b>Lifecycle type:</b>
+  <%= @project.getLifecycleByProject(@project).name %>
+</p>
+
+<p>
+    <b>Project phase:</b></br>
+    <%= collection_select(:project_phase, :project_id, @project.createProjectPhasesByProject(@project), :id, :name) %><br>
+</p>
+
+<p>
+  <button class="btn btn-primary" type = "button" onclick="getSelectId()">
+    Next
+  </button>
+
+  <button class="btn btn-primary" type = "button" onclick="viewAllDevliverable()">
+    View all deliverables
+  </button>
+
+  <br />
+  <br />
+  <br />
+
+  <script language="javascript">
+      function getSelectId(){
+          var selection_option = document.getElementById("project_phase_project_id");
+          var index = selection_option.selectedIndex;
+          var selection_id = selection_option[index].value;
+          //console.log(selection_id);
+          window.location.href = "/project_phases/project_id/" + <%= @project.id %> +"/lifecycle_phase_id/"
+                  + selection_id + "/show";
+          return index;
+      }
+
+      function viewAllDevliverable(){
+          window.location.href = "/deliverables/project_id/" + <%= @project.id %>;
+          return;
+      }
+      //document.getElementById("project_phase_project_id").addEventListener('change', getSelectId);
+  </script>
+
+</p>
+
+
+
+<table id="project_phases" class="table table-striped">
+  <thead>
+  <tr>
+    <th>Project Phase</th>
+
+    <th>Total Estimated Effort(Hours)</th>
+    <th>Total Effort(Hours)</th>
+
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+    <% @project_phases.each do |project_phase| %>
+        <tr>
+          <td>
+            <%= project_phase.name %>
+          </td>
+          <td><%= project_phase.getEstimatedEffortByProjectPhase(project_phase, @project.id) %></td>
+          <td><%= project_phase.getActualEffortByProjectPhase(project_phase, @project.id) %></td>
+        </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<br />
+<%= link_to 'Edit', edit_project_path(@project) %> |
+<%= link_to 'Back', projects_path %>

@@ -1,0 +1,29 @@
+
+<% provide(:title, 'project assign') %>
+
+<div class="container">
+<h1>Projects List</h1>
+<table id="projects_assign" class="table table-striped">
+  <thead>
+  <tr>
+    <th>Project</th>
+    <th></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @projects.each do |project| %>
+      <tr>
+        <td>
+          <%= link_to project.name, project%>
+        </td>
+        <td>
+          <button id = "<%= project.id %>" type = "button" onclick = "assignProject(id)"  style = "height:25px; font-size: 15px;">
+            Add
+          </button>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+</div>

@@ -1,0 +1,97 @@
+<% provide(:title, 'project_phase show') %>
+
+<div class="container">
+
+  <dl class="dl-horizontal">
+    <dt>Project Name</dt>
+    <dd><%= @project.name %></dd>
+  </dl>
+
+  <dl class="dl-horizontal">
+    <dt>Lifecycle</dt>
+    <dd><%= @lifecycle.name %></dd>
+  </dl>
+
+  <dl class="dl-horizontal">
+    <dt>Project Phase</dt>
+    <dd><%= @lifecycle_phase.name %></dd>
+  </dl>
+
+  <dl class="dl-horizontal">
+    <dt>Description</dt>
+    <dd><%= @lifecycle_phase.description %></dd>
+  </dl>
+
+  <p>
+    <b>Choose One Deliverable Type:</b>
+
+    <%= collection_select(:deliverable_type, :deliverable_type_id, @deliverable_type_list, :id, :name) %><br>
+  </p>
+
+
+  <p>
+
+    <button class="btn btn-primary pull-" type = "button" onclick="getSelectId()">
+      Next Step
+    </button>
+
+    <br />
+    <br />
+    <br />
+
+     <table id="deliverables" class="table table-striped">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Estimated effort</th>
+        <th>Actual effort</th>
+      </tr>
+      </thead>
+      <tbody>
+
+
+<% @deliverables_phases.each do |deliverable| %>
+  <tr>
+    <td><%= deliverable.name %></td>
+    <td><%= deliverable.estimated_effort %></td>
+    <td><%= deliverable.actual_effort %></td>
+ </tr>
+ <% end %>
+</tbody>
+</table>
+    <script language="javascript">
+        function getSelectId(){
+            var selection_option = document.getElementById("deliverable_type_deliverable_type_id");
+            var index = selection_option.selectedIndex;
+            var selection_id = selection_option[index].value;
+            console.log(selection_id);
+
+            console.log(selection_option);
+            window.location.href = "/deliverables/project_id/" + <%= @project.id %> +"/lifecycle_phase_id/" + <%= @lifecycle_phase.id %> +"/deliverable_type_id/"
+                    + selection_id + "/new";
+
+            console.log(selection_option[selection_option.length - 1].value);
+            if (selection_id == selection_option[selection_option.length - 1].value) {
+              // Go to adhoc deliverable
+              window.location.href = "/adhoc_deliverables/project_id/" + <%= @project.id %> +"/lifecycle_phase_id/" + <%= @lifecycle_phase.id %> +"/deliverable_type_id/" + selection_id + "/new";
+            } else {
+              // Go to typical deliverable
+              window.location.href = "/deliverables/project_id/" + <%= @project.id %> +"/lifecycle_phase_id/" + <%= @lifecycle_phase.id %> +"/deliverable_type_id/"
+                      + selection_id + "/new";
+            }
+
+            return index;
+        }
+        document.getElementById("deliverable_type_deliverable_type_id").addEventListener('change', getSelectId);
+    </script>
+
+  </p>
+
+
+
+</div>
+
+
+
+
+

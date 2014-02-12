@@ -1,0 +1,278 @@
+<!-- Navbar
+================================================== -->
+<% provide(:title, 'deliverable new') %>
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span5">
+
+      <dl class="dl-horizontal">
+
+        <dt>Project name</dt>
+        <dd><%= @project.name %></dd>
+      </dl>
+
+      <dl class="dl-horizontal">
+        <dt>Deliverable Type</dt>
+        <dd><%= @deliverable_type.name%></dd>
+      </dl>
+
+      <dl class="dl-horizontal">
+        <dt>Project phase</dt>
+        <dd><%= @lifecycle_phase.name%></dd>
+      </dl>
+
+    <%= form_for(@deliverable) do |f| %>
+
+    <div class="field" >
+        <%= f.hidden_field :deliverable_type_id, :value => @deliverable_type.id %>
+    </div>
+
+    <div class="field" >
+        <%= f.hidden_field :project_id, :value => @project.id %>
+    </div>
+
+    <div class="field" >
+        <%= f.hidden_field :project_phase_id, :value => @lifecycle_phase.id %>
+    </div>
+
+    <div class="field">
+        <%= f.label :name %><br />
+        <%= f.text_field :name %>
+    </div>
+    <div class="field">
+        <%= f.label :description %><br />
+        <%= f.text_field :description %>
+    </div>
+  </div>
+
+
+    <div class = "span5">
+
+    <div class = "table_row">
+        <%= f.label :Unit_of_measure %>
+        <%= f.label @deliverable_type.unit_of_measure%>
+        <%= f.label :Complexity %>
+        <%= select("deliverable", "complexity", {:low => "low", :medium => "medium", :high => "high" }) %>
+    </div>
+
+
+    </div>
+
+
+    <div class = "table_row">
+        <%= f.label :Estimated_size %>
+        <%= f.text_field :estimated_size %>
+    </div>
+
+    <div class = "table_row">
+        <%= f.label :Estimated_production_rate %>
+        <%= f.text_field :estimated_production_rate %>
+    </div>
+
+    <div class = "table_row">
+        <%= f.label :Estimated_effort %>
+        <%= f.text_field :estimated_effort %>
+    </div>
+  <div class="actions" >
+    <%= f.submit :value => "Create" %>
+  </div>
+
+
+  <div class = "span2-offset2" style="padding-left: 400px" >
+     <div id="myDiv">
+     </div>
+  </div>
+</div>
+<% end %>
+
+
+
+
+<%= link_to 'Back', deliverables_path %>
+</div>
+</div>
+</div>
+
+
+<script>
+  //calculate the estimated effort
+  var f1 = document.getElementById('deliverable_estimated_size');
+  var f2 = document.getElementById('deliverable_estimated_production_rate');
+  var f3 = document.getElementById('deliverable_estimated_effort');
+  var f1_edit = false;
+  var f2_edit = false;
+  var f3_edit = false;
+  var f1_update = false;
+  var f2_update = false;
+  var f3_update = false;
+
+  var delay = (function(){
+    var timer = 0;
+    return function(callback, ms){
+      clearTimeout (timer);
+      timer = setTimeout(callback, ms);
+    };
+  })();
+
+  //update the first field
+ function update_f1_edit() {
+     if (f1.value && f2.value && !f3.value) {
+         f3.value = parseInt(f1.value) * parseInt(f2.value);
+         f1_update = false;
+         f2_update = false;
+         f3_update = true;
+     } else if (f1.value && f3.value && !f2.value){
+         f2.value = parseInt(f3.value) / parseInt(f1.value);
+         f1_update = false;
+         f2_update = true;
+         f3_update = false;
+     } else if (f1.value && f2.value && f3.value) {
+        if (f1_edit) {
+          if (f3_update) {
+            f3.value = parseInt(f1.value) * parseInt(f2.value);
+          } else if (f2_update) {
+            f2.value = parseInt(f3.value) / parseInt(f1.value);
+          }
+        } else {
+          f2.value = '';
+          f3.value = '';
+          f1_update = false;
+          f2_update = false;
+          f3_update = false;
+        }
+     }
+  };
+
+  //update the second field
+  function update_f2_edit() {
+    if (f1.value && f2.value && !f3.value) {
+        f3.value = parseInt(f1.value) * parseInt(f2.value);
+        f1_update = false;
+        f2_update = false;
+        f3_update = true;
+    } else if (f2.value && f3.value && !f1.value) {
+        f1.value = parseInt(f3.value) / parseInt(f2.value);
+        f1_update = true;
+        f2_update = false;
+        f3_update = false;
+    } else if (f1.value && f2.value && f3.value) {
+        if (f1_update) {
+          f1.value = parseInt(f3.value) / parseInt(f2.value);
+        } else if (f3_update) {
+          f3.value = parseInt(f1.value) * parseInt(f2.value);
+        } else {
+          f1.value = '';
+          f3.value = '';
+          f1_update = false;
+          f2_update = false;
+          f3_update = false;
+        }
+    }
+  };
+
+  //update the third field
+  function update_f3_edit() {
+    if (f1.value && f3.value && !f2.value) {
+        f2.value = parseInt(f3.value) / parseInt(f1.value);
+        f1_update = false;
+        f2_update = true;
+        f3_update = false;
+    } else if (f2.value && f3.value && !f1.value) {
+        f1.value = parseInt(f3.value) / parseInt(f2.value);
+        f1_update = true;
+        f2_update = false;
+        f3_update = false;
+    } else if (f1.value && f2.value && f3.value) {
+      if (f1_update) {
+        f1.value = parseInt(f3.value) / parseInt(f2.value);
+      } else if (f2_update) {
+        f2.value = parseInt(f3.value) / parseInt(f1.value);
+      } else {
+        f1.value = '';
+        f2.value = '';
+        f1_update = false;
+        f2_update = false;
+        f3_update = false;
+      }
+    }
+  };
+
+  f1.addEventListener("focus", function() {
+    f1_edit = true;
+  })
+
+  f1.addEventListener("blur", function() {
+    f1_edit = false;
+  })
+
+  f2.addEventListener("focus", function() {
+    f2_edit = true;
+  })
+
+  f2.addEventListener("blur", function() {
+    f2_edit = false;
+  })
+
+  f3.addEventListener("focus", function() {
+    f3_edit = true;
+  })
+
+  f3.addEventListener("blur", function() {
+    f3_edit = false;
+  })
+
+
+  f1.onkeyup = function() {
+    if (validInput(f1)) {
+      f1.value = ''; // AscII code falls outside of 48-57 is not a number
+    } else {
+      update_f1_edit();
+      // delay(function() {
+      //   update_f1_edit();
+      // }, 1000);
+    }
+  }
+
+  f2.onkeyup = function() {
+    if (validInput(f2)) {
+      f2.value = ''; // AscII code falls outside of 48-57 is not a number
+    } else {
+      update_f2_edit();
+    }
+  }
+
+  f3.onkeyup = function() {
+    if (validInput(f3)) {
+      f3.value = ''; // AscII code falls outside of 48-57 is not a number
+    } else {
+      update_f3_edit();
+    }
+  }
+
+  //check the validation of the input
+  function validInput(f) {
+    console.log(f.value.length)
+    if (f.value.charCodeAt(f.value.length-1) > 57 || f.value.charCodeAt(f.value.length-1) < 48) {
+        return true;
+    } else {
+        return false;
+    }
+  }
+
+function loadXMLDoc()
+{
+  $.ajax({
+    url: "/historical_data/index",
+    type: 'GET',
+    success: function (data) {
+      $('#myDiv').html(data);
+    }
+  });
+}
+
+window.onload = loadXMLDoc();
+
+</script>
+
+

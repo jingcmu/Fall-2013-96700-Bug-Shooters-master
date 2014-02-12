@@ -1,0 +1,72 @@
+<!-- Navbar
+================================================== -->
+<% provide(:title, 'deliverable index') %>
+
+  <div class="container">
+    <h1>Show Deliverable List</h1>
+    <table id="deliverables" class="table table-striped">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Project</th>
+        <th>Project Phase</th>
+        <th>Complexity</th>
+        <th>Unit of Measure</th>
+        <th>Estimated size</th>
+        <th>Estimated production rate</th>
+        <th>Estimated effort</th>
+        <th>Actual effort</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+
+
+<% @deliverables.each do |deliverable| %>
+  <% @project = deliverable.getProjectByDeliverable(deliverable) %>
+  <tr>
+    <td><%= deliverable.name %></td>
+    <td><%= @project.name %></td>
+    <td><%= deliverable.getProjectPhaseByDeliverable(deliverable) %></td>
+    <td><%= deliverable.complexity%></td>
+    <td><%= deliverable.unit_of_measure%></td>
+    <td><%= deliverable.estimated_size%></td>
+    <td><%= deliverable.estimated_production_rate %></td>
+    <td><%= deliverable.estimated_effort %></td>
+    <td><input type="text" name="fname" style="width: 30px" id="deliverable.<%= deliverable.id %>" value="<%= deliverable.actual_effort %>"></td>
+    <td><a onclick="update_effort_log(id)" id="<%= deliverable.id %>" >Log</a></td>
+    <td><%= link_to 'Show', deliverable %></td>
+    <td><%= link_to 'Edit', edit_deliverable_path(deliverable) %></td>
+    <td><%= link_to 'Destroy', deliverable, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+
+
+<% end %>
+    </tbody>
+  </table>
+</div>
+
+<br />
+
+<script type="text/javascript">
+
+  function update_effort_log(id) {
+    var actual_effort = document.getElementById("deliverable." + id).value;
+    if (isNaN(actual_effort)) {
+      console.log("Input is not a number");
+      return;
+    };
+    $.ajax({
+      url:"/deliverables/deliverable_id/" + id + "/actual_effort/" + actual_effort + "/log",
+      success:function(result) {
+        console.log('Updated');
+    }});
+  }
+</script>
+
+<%= link_to 'Back', "/projects/#{@project_id}" %>
+
+

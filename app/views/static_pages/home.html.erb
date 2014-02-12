@@ -1,0 +1,32 @@
+<% provide(:title, 'home') %>
+
+<br />
+<br />
+
+<div class="jumbotron" style= "background-image: url('/assets/bg-1-full.jpg')" style = "background-size: contain">
+
+  <h1 style="color: #FFFFFF">Start PET today!</h1>
+  <h3 style="color: #FFFFFF">Welcome to
+    <a href="/help">PET</a>
+    <p>A Project Management Tool <br/><br/> </p>
+  </h3>
+
+  <% if signed_in? and not is_admin? %>
+    <a href="/projects">View My Projects</a>
+  <% end %>
+
+  <% if not signed_in? %>
+    <h4>
+      <a href="/signup"><button class="btn btn-small" type="button" style="font-size: 20px">Sign Up Now</button></a>
+    </h4>
+  <% end %>
+
+  <% if signed_in? and is_admin? %>
+  <h4>
+    <a href="/projects">Project Management</a>
+  </h4>
+  <% end %>
+
+
+</div>
+

@@ -1,0 +1,67 @@
+<!-- Navbar
+================================================== -->
+<% provide(:title, 'deliverable show') %>
+
+
+<div class="container-fluid">
+
+<dl class="dl-horizontal">
+  <dt>Deliverable Name:</dt>
+  <dd><%= @deliverable.name %></dd>
+</dl>
+
+  <dl class="dl-horizontal">
+    <dt>Deliverable Type:</dt>
+    <dd><%= @deliverable_type.name %></dd>
+  </dl>
+
+<dl class="dl-horizontal">
+  <dt>Description:</dt>
+  <dd><%= @deliverable.description %></dd>
+</dl>
+
+
+<dl class="dl-horizontal">
+  <dt>Complexity:</dt>
+  <dd><%=@deliverable.complexity %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt>Unit of Measure:</dt>
+  <dd><%=@deliverable.unit_of_measure %></dd>
+  <%puts "@deliverable.unit_of_measure = ",@deliverable.unit_of_measure%>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt>Estimated Size:</dt>
+  <dd><%=@deliverable.estimated_size %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt>Production Rate:</dt>
+  <dd><%=@deliverable.estimated_production_rate %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt>Estimated Effort:</dt>
+  <dd><%=@deliverable.estimated_effort %></dd>
+</dl>
+
+
+<p>
+  <button class="btn" type = "button">
+    <%= link_to 'Edit', edit_deliverable_path(@deliverable) %>
+  </button>
+
+  <button class="btn" type = "button">
+    <%= link_to 'Delete', @deliverable, method: :delete, data: { confirm: 'Are you sure?' } %>
+  </button>
+
+  <button class="btn" type = "button">
+    <%= link_to "Show All Deliverables", "/deliverables/project_id/#{@deliverable.project_id}" %>
+  </button>
+</p>
+
+
+</div>
+

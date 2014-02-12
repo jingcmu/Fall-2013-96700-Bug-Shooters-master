@@ -1,0 +1,26 @@
+<% provide(:title, 'user edit') %>
+<h1>Editing user profile</h1>
+
+<%= form_for(@user) do |f| %>
+    <%= render 'shared/error_messages' %>
+
+    <%= f.label :name %>
+    <h3><%= @user.name %>  </h3>
+
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+
+    <%= f.label :new_password, "New password"%>
+    <%= f.password_field :password %>
+
+    <%= f.label :password_confirmation, "Confirmation" %>
+    <%= f.password_field :password_confirmation %>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+
+<% end %>
+
+<%= link_to 'Show', @user %> |
+<%= link_to 'Back', @user %>
